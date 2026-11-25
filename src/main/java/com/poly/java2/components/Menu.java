@@ -4,6 +4,9 @@
  */
 package com.poly.java2.components;
 
+import com.poly.java2.entities.Document;
+import com.poly.java2.services.DocumentServices;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -50,6 +53,7 @@ public class Menu {
                     break;
                 case 4:
                     System.out.println("Chức năng xem danh sách tài liệu");
+                    this.showDocumentList(DocumentServices.getAll());
                     break;
                 case 5:
                     System.out.println("Chức năng thêm bản sao");
@@ -103,6 +107,16 @@ public class Menu {
             } catch (NumberFormatException e) {
                 System.out.println("Vui lòng nhập một số nguyên.");
             }
+        }
+    }
+    
+    private void showDocumentList(List<Document> documents){
+        for(Document document : documents){
+            System.out.printf("Mã tài liệu: %d\n", document.getId());
+            System.out.printf("Tên tài liệu: %s\n", document.getTitle());
+            System.out.printf("Tác giả tài liệu: %s\n", document.getAuthor());
+            System.out.printf("Danh mục tài liệu: %s\n", document.getCategory());
+            System.out.println("============================================");
         }
     }
 }

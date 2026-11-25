@@ -1,2 +1,6 @@
+com/poly/java2/entities/Document.class
+com/poly/java2/components/Menu.class
+com/poly/java2/entities/DocumentCopy.class
+com/poly/java2/config/DatabaseConnection.class
+com/poly/java2/services/DocumentServices.class
 com/poly/java2/Java2Demo.class
-com/poly/java2/DatabaseConnection.class

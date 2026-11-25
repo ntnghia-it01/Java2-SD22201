@@ -1,2 +1,6 @@
-/Users/trongnghia/NetBeansProjects/Java2Demo/src/main/java/com/poly/java2/DatabaseConnection.java
 /Users/trongnghia/NetBeansProjects/Java2Demo/src/main/java/com/poly/java2/Java2Demo.java
+/Users/trongnghia/NetBeansProjects/Java2Demo/src/main/java/com/poly/java2/components/Menu.java
+/Users/trongnghia/NetBeansProjects/Java2Demo/src/main/java/com/poly/java2/config/DatabaseConnection.java
+/Users/trongnghia/NetBeansProjects/Java2Demo/src/main/java/com/poly/java2/entities/Document.java
+/Users/trongnghia/NetBeansProjects/Java2Demo/src/main/java/com/poly/java2/entities/DocumentCopy.java
+/Users/trongnghia/NetBeansProjects/Java2Demo/src/main/java/com/poly/java2/services/DocumentServices.java
