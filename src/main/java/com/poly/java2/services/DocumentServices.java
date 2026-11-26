@@ -77,4 +77,72 @@ public class DocumentServices {
         
         return documents;
     }
+    
+//    Nếu hàm này trả về true => Thêm thành công
+//    Nếu hàm trả về false => Thêm thất bại
+    public static boolean addDocument(Document document){
+        try{
+            Connection conn = DatabaseConnection.getConnection();
+            
+            String sql = "INSERT INTO documents(title, author, category) VALUES(?, ?, ?)";
+            
+            PreparedStatement statement = conn.prepareStatement(sql);
+            
+//            Gán giá trị của document khi người dùng nhập vào câu lệnh sql
+//            Số đếm của dấu ? trong câu lệnh bắt đầu từ 1
+//            Dùng hàm set tương ứng với kiểu dữ liệu để gán giá trị
+            statement.setString(1, document.getTitle());
+            statement.setString(2, document.getAuthor());
+            statement.setString(3, document.getCategory());
+            
+//            Đối với INSERT, UPDATE, DELETE => executeUpdate
+//            - Hàm này sẽ trả về số dòng đã được cập nhật sau khi chạy lệnh sql xong
+//            - Nếu trả về 0 => Không có dòng nào được cập nhật => Câu lệnh chưa được thực thi => Lỗi 
+//            - Nếu trả về != 0 => Số lượng dòng ở sql đã được thêm hoặc cập nhật => Thành công
+            int rowUpdate = statement.executeUpdate();
+            
+            return rowUpdate != 0;
+//            - Nếu rowUpdate != 0 => Đúng => Hàm sẽ return true;
+//            - Nếu rowUpdate != 0 => Sai => Hàm sẽ return false;
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+//    Cập nhật tất cả thông tin của tài liệu theo điều kiện là id
+//    UPDATE ... SET .... WHERE id=...
+    public boolean updateDocument(Document document){
+        try{
+            Connection conn = DatabaseConnection.getConnection();
+            
+            String sql = "UPDATE documents SET title=?, author=?, category=? WHERE id=?";
+            
+            PreparedStatement statement = conn.prepareStatement(sql);
+            
+            statement.setString(1, document.getTitle());
+            statement.setString(2, document.getAuthor());
+            statement.setString(3, document.getCategory());
+            statement.setInt(4, document.getId());
+            
+            int rowUpdate = statement.executeUpdate();
+            
+            return rowUpdate != 0;
+                    
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
+
+//CREATE TABLE [dbo].[documents] (
+//    [id]       INT            IDENTITY (1, 1) NOT NULL,
+//    [title]    NVARCHAR (255) NOT NULL,
+//    [author]   NVARCHAR (150) NOT NULL,
+//    [category] NVARCHAR (100) NOT NULL,
+//    CONSTRAINT [PK_DOCUMENT] PRIMARY KEY CLUSTERED ([id] ASC)
+//);
+//
+

@@ -44,6 +44,13 @@ public class Menu {
             switch (luaChon) {
                 case 1:
                     System.out.println("Chức năng thêm tài liệu");
+                    Document document = this.enterInfo();
+                    boolean check = DocumentServices.addDocument(document);
+                    if(check){
+                        System.out.println("Thêm tài liệu thành công");
+                    }else{
+                        System.out.println("Thêm tài liệu thất bại");
+                    }
                     break;
                 case 2:
                     System.out.println("Chức năng sửa tài liệu");
@@ -118,5 +125,61 @@ public class Menu {
             System.out.printf("Danh mục tài liệu: %s\n", document.getCategory());
             System.out.println("============================================");
         }
+    }
+    
+//    Cho người dùng nhập thông tin của tài liệu 
+//    Cho người dùng nhập lần lượt thông tin của tài liệu và có kiểm tra lỗi
+//    Nếu phát sinh lỗi ở bất kỳ dữ liệu nào sẽ yêu cầu nhập lại
+//    - Tiêu đề không rỗng và phải có ít nhất 2 từ
+//      - Ví dụ: Sách Java == 2 từ => Đúng, Sách == 1 từ => Sai nhập lại
+//    - Tên tác giả không rỗng
+//    - Danh mục không rỗng
+//    Sau khi nhập xong sẽ gán giá trị vào đối tượng document
+    private Document enterInfo(){
+        Scanner scanner = new Scanner(System.in);
+        Document document = new Document();
+        while(true){
+            System.out.print("Nhập tiêu đề tài liệu: ");
+            String title = scanner.nextLine();
+//            Hàm để loại bỏ khoản trắng dư ở hai đầu nội dung
+//            => " sách java    " => "sách java"
+//            Hàm chuyển đổi chuỗi thành mảng và được cắt ra từ ký tự space " "
+//            => "sách java" => ["sách", "java"]
+//            Đếm số phần tử của mảng nếu từ 2 trở lên là có hai từ 
+
+//            .trim()=> Bỏ khoản trắng 2 đầu
+//            .split(" ") => Chuyển chuỗi thành mảng cắt ra từ nội dung ??
+            if(title.trim().split(" ").length >= 2){
+//              Thoả điều kiện 
+                document.setTitle(title);
+                break;
+            }
+            System.out.println("Nhập tiêu đề sai. Nhập lại");
+        }
+        
+        while(true){
+            System.out.print("Nhập tên tác giả: ");
+            String author = scanner.nextLine();
+//            .isBlank() => "     " => Rỗng => True => Không rỗng
+//            .isEmpty() => "     " => Có ký tự => False => Không bỏ trống
+            if(!author.isBlank()){
+                document.setAuthor(author);
+                break;
+            }
+            System.out.println("Nhập tên tác giả sai. Nhập lại");
+        }
+        
+        while(true){
+            System.out.print("Nhập danh mục: ");
+            String category = scanner.nextLine();
+
+            if(!category.isBlank()){
+                document.setCategory(category);
+                break;
+            }
+            System.out.println("Nhập danh mục sai. Nhập lại");
+        }
+        
+        return document;
     }
 }
