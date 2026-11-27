@@ -42,7 +42,7 @@ public class Menu {
             luaChon = nhapLuaChon();
 
             switch (luaChon) {
-                case 1:
+                case 1:{
                     System.out.println("Chức năng thêm tài liệu");
                     Document document = this.enterInfo();
                     boolean check = DocumentServices.addDocument(document);
@@ -52,9 +52,36 @@ public class Menu {
                         System.out.println("Thêm tài liệu thất bại");
                     }
                     break;
-                case 2:
+                }
+                case 2:{
                     System.out.println("Chức năng sửa tài liệu");
+                    System.out.println("Tìm tài liệu cần sửa");
+//                  Cho người dùng nhập vào id của tài liệu có kiểm tra theo quy ước
+                    int id = this.enterId();
+//                  Tìm tài liệu theo id vừa nhập xem có trong db hay không?
+                    Document documentCheck = DocumentServices.findById(id);
+                    
+                    if(documentCheck == null){
+                        System.out.println("Tài liệu không tồn tại. Không thể sửa.");
+                        break;
+                    }
+                    
+                    System.out.println("Đã tìm thấy tài liệu. Vui lòng nhập nội dung cần sửa");
+//                  Cho người dùng nhập thông tin của tài liệu có kiểm tra theo quy ước
+                    Document document = this.enterInfo();
+//                  Thông tin ở đây không có id
+//                  Nhưng khi sửa sẽ cần id để sửa
+//                  Nên sẽ set thêm id vào đối tượng document trước khi thực hiện sửa
+                    document.setId(id);
+                    
+                    boolean check = DocumentServices.updateDocument(document);
+                    if(check){
+                        System.out.println("Cập nhật tài liệu thành công");
+                    }else{
+                        System.out.println("Cập nhật tài liệu thất bại");
+                    }
                     break;
+                }
                 case 3:
                     System.out.println("Chức năng xóa tài liệu");
                     break;
@@ -181,5 +208,31 @@ public class Menu {
         }
         
         return document;
+    }
+    
+//    Cho người dùng nhập vào Id
+//    Kiểm tra các điều kiện sau nếu sai nhập lại
+//    - Id phải là số
+//    - Id phải lớn hơn 0
+//    Nếu nhập đúng thì return về giá trị của id
+    private int enterId(){
+        while(true){
+            Scanner scanner = new Scanner(System.in);
+            
+            System.out.print("Nhập ID: ");
+            String idString = scanner.nextLine();
+            
+            try{
+                int id = Integer.parseInt(idString);
+                
+                if(id > 0){
+                    return id;
+                }
+            }catch(Exception e){
+//                e.printStackTrace();
+            }
+            
+            System.out.println("ID phải là số nguyên dương. Nhập lại!");
+        }
     }
 }

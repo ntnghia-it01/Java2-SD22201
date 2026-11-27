@@ -113,7 +113,7 @@ public class DocumentServices {
     
 //    Cập nhật tất cả thông tin của tài liệu theo điều kiện là id
 //    UPDATE ... SET .... WHERE id=...
-    public boolean updateDocument(Document document){
+    public static boolean updateDocument(Document document){
         try{
             Connection conn = DatabaseConnection.getConnection();
             
@@ -134,6 +134,59 @@ public class DocumentServices {
             e.printStackTrace();
             return false;
         }
+    }
+    
+//    Xây dựng một phương thức
+//    Lấy thông tin danh mục ở Database từ id
+    public static Document findById(int id){
+        try{
+            Connection conn = DatabaseConnection.getConnection();
+            
+            String sql = "SELECT * FROM documents WHERE id=?";
+            
+            PreparedStatement statement = conn.prepareStatement(sql);
+            
+//            ? => Ngăn chặn tấn công SQL Injection
+//          Chèn các mã sql vào ngay lệnh chỗ nối chuỗi
+//          => Dẫn đến lệnh sql luôn đúng
+
+
+//            SELECT * FROM users WHERE username='abc' AND password=1 OR 1=1
+//              <=> SELECT * FROM users
+
+//                username='abc' AND password=1 OR 1=1
+//                => FALSE OR TRUE => TRUE
+
+//            username => abc
+
+//            password => 1 OR 1=1
+            
+            statement.setInt(1, id);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+//            Do đang tìm kiếm theo id => Khoá chính
+//            Nếu tìm thấy thì chỉ thấy được một tài liệu duy nhất hoặc không thấy tài liệu nào
+//            resultSet.next() == true => Tìm thấy document với id tương ứng
+            if(resultSet.next()){
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("author");
+                String category = resultSet.getString("category");
+                
+                Document document = new Document();
+                document.setId(id);
+                document.setTitle(title);
+                document.setAuthor(author);
+                document.setCategory(category);
+                
+                return document;
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        return null;
     }
 }
 
